@@ -7,29 +7,18 @@ int main() {
 
   // fork a child process
   pid = fork();
-
+  //initialize a variable to 10
+  int var=10;
   if (pid == 0) {
     // this is the child process
-    printf("This is the child process (PID: %d)\n", getpid());
-    // use execlp to replace child process image with "ls -l" command
-        int exec_ret = execlp("ls", "ls", "-l", NULL);
-     // handle potential errors in execlp
-        if (exec_ret == -1) {
-            perror("execlp");
-            _exit(1); //exit the child process with error
-        }
+    printf("Child PID: %d, Variable value: %d\n", getpid(),var);
+    int var=20;
+    printf("Child After change, Variable value: %d\n", var);
   } else if (pid > 0) {
     // parent process
-    int status;
-    // wait for child process to finish
-    wait(&status);
-    // used of WIFEXITED  to check if the child exited normally
-    // WEXITSTATUS is to get the exit code (0 for success).
-    if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
-            printf("Child process (PID: %d) terminated successfully.\n", pid);
-        } else {
-            printf("Child process (PID: %d) terminated with error.\n", pid);
-        }
+   printf("Parent PID: %d, Variable value: %d\n", getpid(), var);
+    var = 30; // Change variable in parent
+    printf("Parent After change, Variable value: %d\n", var);
   }else{
     //pid<0
     //fork failed
